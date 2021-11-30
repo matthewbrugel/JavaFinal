@@ -1,4 +1,4 @@
-package project7;
+package termproject;
 
 /**
  * Title:        Project #7
