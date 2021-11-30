@@ -58,14 +58,16 @@ public class TwoFourTree
     public void insertElement(Object key, Object element) {
         TFNode previousNode = null;
         TFNode currentNode = root();
-        int currentIndex;
+        int currentIndex = 5;
         while (currentNode != null) {
             currentIndex = findFirstGreaterThanOrEqualTo(currentNode, key);
             previousNode = currentNode;
             currentNode = previousNode.getChild(currentIndex);
         }
-        //Do the insert thing
-        fixOverflow();
+        previousNode.insertItem(currentIndex, new Item (key, element));
+        if (previousNode.getNumItems() == 4) {
+            fixOverflow();
+        }
     }
     
     /**
