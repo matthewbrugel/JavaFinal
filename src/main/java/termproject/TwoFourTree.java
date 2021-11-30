@@ -59,6 +59,7 @@ public class TwoFourTree
         for(i = 0; i < T.getNumItems(); i++){
             
         }
+        return i;
     }
 
     /**
