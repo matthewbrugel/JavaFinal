@@ -1,5 +1,7 @@
 package termproject;
 
+import java.awt.RenderingHints;
+
 /**
  * Title:        Term Project 2-4 Trees
  * Description:
@@ -50,6 +52,13 @@ public class TwoFourTree
      * @param element to be inserted
      */
     public void insertElement(Object key, Object element) {
+    }
+    
+    public int FFGTE(TFNode T,int k){
+        int i = 0;
+        for(i = 0; i < T.getNumItems(); i++){
+            
+        }
     }
 
     /**
