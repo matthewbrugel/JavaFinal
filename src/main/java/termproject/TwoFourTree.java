@@ -45,6 +45,10 @@ public class TwoFourTree
     public Object findElement(Object key) {
         return null;
     }
+    
+    public void fixOverflow() {
+        
+    }
 
     /**
      * Inserts provided element into the Dictionary
@@ -52,10 +56,26 @@ public class TwoFourTree
      * @param element to be inserted
      */
     public void insertElement(Object key, Object element) {
+        TFNode previousNode = null;
+        TFNode currentNode = root();
+        int currentIndex;
+        while (currentNode != null) {
+            currentIndex = findFirstGreaterThanOrEqualTo(currentNode, key);
+            previousNode = currentNode;
+            currentNode = previousNode.getChild(currentIndex);
+        }
+        //Do the insert thing
+        fixOverflow();
     }
     
-    //Find First Greater Than or Equal
-    public int findFirstGreaterThanOrEqualTo(TFNode T, int key){
+    /**
+     * Finds the first item with a key within a TFNode greater than or equal to
+     * the current key
+     * @param T node being searched
+     * @param key being compared
+     * @return the first item greater than or 
+     */
+    public int findFirstGreaterThanOrEqualTo(TFNode T, Object key){
         int i = 0;
         for(i = 0; i < T.getNumItems(); i++){
             Object k = T.getItem(i).key();
