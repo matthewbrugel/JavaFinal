@@ -54,10 +54,14 @@ public class TwoFourTree
     public void insertElement(Object key, Object element) {
     }
     
-    public int FFGTE(TFNode T,int k){
+    //Find First Greater Than or Equal
+    public int findFirstGreaterThanOrEqualTo(TFNode T, int key){
         int i = 0;
         for(i = 0; i < T.getNumItems(); i++){
-            
+            Object k = T.getItem(i).key();
+            if (treeComp.isGreaterThanOrEqualTo(k, key)) {
+                return i;
+            }
         }
         return i;
     }
