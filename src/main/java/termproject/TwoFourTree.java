@@ -171,38 +171,38 @@ public class TwoFourTree
         Integer myInt8 = new Integer(3);
         myTree.insertElement(myInt8, myInt8);
 
-//        Integer myInt9 = new Integer(53);
-//        myTree.insertElement(myInt9, myInt9);
-//
-//        Integer myInt10 = new Integer(66);
-//        myTree.insertElement(myInt10, myInt10);
-//
-//        Integer myInt11 = new Integer(19);
-//        myTree.insertElement(myInt11, myInt11);
-//
-//        Integer myInt12 = new Integer(23);
-//        myTree.insertElement(myInt12, myInt12);
-//
-//        Integer myInt13 = new Integer(24);
-//        myTree.insertElement(myInt13, myInt13);
-//
-//        Integer myInt14 = new Integer(88);
-//        myTree.insertElement(myInt14, myInt14);
-//
-//        Integer myInt15 = new Integer(1);
-//        myTree.insertElement(myInt15, myInt15);
-//
-//        Integer myInt16 = new Integer(97);
-//        myTree.insertElement(myInt16, myInt16);
-//
-//        Integer myInt17 = new Integer(94);
-//        myTree.insertElement(myInt17, myInt17);
-//
-//        Integer myInt18 = new Integer(35);
-//        myTree.insertElement(myInt18, myInt18);
-//
-//        Integer myInt19 = new Integer(51);
-//        myTree.insertElement(myInt19, myInt19);
+        Integer myInt9 = new Integer(53);
+        myTree.insertElement(myInt9, myInt9);
+
+        Integer myInt10 = new Integer(66);
+        myTree.insertElement(myInt10, myInt10);
+
+        Integer myInt11 = new Integer(19);
+        myTree.insertElement(myInt11, myInt11);
+
+        Integer myInt12 = new Integer(23);
+        myTree.insertElement(myInt12, myInt12);
+
+        Integer myInt13 = new Integer(24);
+        myTree.insertElement(myInt13, myInt13);
+
+        Integer myInt14 = new Integer(88);
+        myTree.insertElement(myInt14, myInt14);
+
+        Integer myInt15 = new Integer(1);
+        myTree.insertElement(myInt15, myInt15);
+
+        Integer myInt16 = new Integer(97);
+        myTree.insertElement(myInt16, myInt16);
+
+        Integer myInt17 = new Integer(94);
+        myTree.insertElement(myInt17, myInt17);
+
+        Integer myInt18 = new Integer(35);
+        myTree.insertElement(myInt18, myInt18);
+
+        Integer myInt19 = new Integer(51);
+        myTree.insertElement(myInt19, myInt19);
 
         myTree.printAllElements();
         System.out.println("done");
