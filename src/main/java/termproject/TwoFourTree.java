@@ -67,10 +67,7 @@ public class TwoFourTree
         //remove item from current node
         current.removeItem(2);
         
-        //if parent is full, we have to fixoverflow on parent as well
-        if (parent.getNumItems() == 4) {
-            fixOverflow(parent);
-        }
+
         
         //get last item of current node
         Item num4 = current.getItem(2);
@@ -83,6 +80,11 @@ public class TwoFourTree
         }
         int childIndex = FindFirstGreaterThanOrEqualTo(childNode, num4.key());
         childNode.insertItem(childIndex, num4);
+        
+        //if parent is full, we have to fixoverflow on parent as well
+        if (parent.getNumItems() == 4) {
+            fixOverflow(parent);
+        }
     }
 
     /**
