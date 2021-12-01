@@ -46,8 +46,43 @@ public class TwoFourTree
         return null;
     }
     
-    public void fixOverflow() {
+    private void fixOverflow(TFNode node) {
+        //get current node being passed in
         
+        //create a new TFNode if current is root
+        TFNode current = node;
+        
+        //get the current node's parent
+        TFNode parent = current.getParent();
+        if(parent == null){
+            parent = new TFNode();
+        }
+        
+        //get current nodes third item
+        Item num3 = current.getItem(2);
+        //get index of where to insert item in parent
+        int parentIndex = FindFirstGreaterThanOrEqualTo(parent, num3.key());
+        //put item in parent
+        parent.insertItem(parentIndex, num3);
+        //remove item from current node
+        current.removeItem(2);
+        
+        //if parent is full, we have to fixoverflow on parent as well
+        if (parent.getNumItems() == 4) {
+            fixOverflow(parent);
+        }
+        
+        //get last item of current node
+        Item num4 = current.getItem(2);
+        current.removeItem(2);
+        int indexInsert2 = FindFirstGreaterThanOrEqualTo(parent, num4.key());
+        TFNode childNode = parent.getChild(indexInsert2);
+        if (childNode == null) {
+            childNode = new TFNode();
+            parent.setChild(indexInsert2, childNode);
+        }
+        int childIndex = FindFirstGreaterThanOrEqualTo(childNode, num4.key());
+        childNode.insertItem(childIndex, num4);
     }
 
     /**
@@ -58,15 +93,24 @@ public class TwoFourTree
     public void insertElement(Object key, Object element) {
         TFNode previousNode = null;
         TFNode currentNode = root();
-        int currentIndex = 5;
+        
+        //if root hasnt been set then make new tfnode and set it to root
+        if(currentNode == null){
+            currentNode = new TFNode();
+            setRoot(currentNode);
+        }
+        
+        int currentIndex = 0;
+       
         while (currentNode != null) {
-            currentIndex = findFirstGreaterThanOrEqualTo(currentNode, key);
+            currentIndex = FindFirstGreaterThanOrEqualTo(currentNode, key);
             previousNode = currentNode;
             currentNode = previousNode.getChild(currentIndex);
         }
+        
         previousNode.insertItem(currentIndex, new Item (key, element));
         if (previousNode.getNumItems() == 4) {
-            fixOverflow();
+            fixOverflow(previousNode);
         }
     }
     
@@ -77,7 +121,7 @@ public class TwoFourTree
      * @param key being compared
      * @return the first item greater than or 
      */
-    public int findFirstGreaterThanOrEqualTo(TFNode T, Object key){
+    public int FindFirstGreaterThanOrEqualTo(TFNode T, Object key){
         int i = 0;
         for(i = 0; i < T.getNumItems(); i++){
             Object k = T.getItem(i).key();
@@ -125,38 +169,38 @@ public class TwoFourTree
         Integer myInt8 = new Integer(3);
         myTree.insertElement(myInt8, myInt8);
 
-        Integer myInt9 = new Integer(53);
-        myTree.insertElement(myInt9, myInt9);
-
-        Integer myInt10 = new Integer(66);
-        myTree.insertElement(myInt10, myInt10);
-
-        Integer myInt11 = new Integer(19);
-        myTree.insertElement(myInt11, myInt11);
-
-        Integer myInt12 = new Integer(23);
-        myTree.insertElement(myInt12, myInt12);
-
-        Integer myInt13 = new Integer(24);
-        myTree.insertElement(myInt13, myInt13);
-
-        Integer myInt14 = new Integer(88);
-        myTree.insertElement(myInt14, myInt14);
-
-        Integer myInt15 = new Integer(1);
-        myTree.insertElement(myInt15, myInt15);
-
-        Integer myInt16 = new Integer(97);
-        myTree.insertElement(myInt16, myInt16);
-
-        Integer myInt17 = new Integer(94);
-        myTree.insertElement(myInt17, myInt17);
-
-        Integer myInt18 = new Integer(35);
-        myTree.insertElement(myInt18, myInt18);
-
-        Integer myInt19 = new Integer(51);
-        myTree.insertElement(myInt19, myInt19);
+//        Integer myInt9 = new Integer(53);
+//        myTree.insertElement(myInt9, myInt9);
+//
+//        Integer myInt10 = new Integer(66);
+//        myTree.insertElement(myInt10, myInt10);
+//
+//        Integer myInt11 = new Integer(19);
+//        myTree.insertElement(myInt11, myInt11);
+//
+//        Integer myInt12 = new Integer(23);
+//        myTree.insertElement(myInt12, myInt12);
+//
+//        Integer myInt13 = new Integer(24);
+//        myTree.insertElement(myInt13, myInt13);
+//
+//        Integer myInt14 = new Integer(88);
+//        myTree.insertElement(myInt14, myInt14);
+//
+//        Integer myInt15 = new Integer(1);
+//        myTree.insertElement(myInt15, myInt15);
+//
+//        Integer myInt16 = new Integer(97);
+//        myTree.insertElement(myInt16, myInt16);
+//
+//        Integer myInt17 = new Integer(94);
+//        myTree.insertElement(myInt17, myInt17);
+//
+//        Integer myInt18 = new Integer(35);
+//        myTree.insertElement(myInt18, myInt18);
+//
+//        Integer myInt19 = new Integer(51);
+//        myTree.insertElement(myInt19, myInt19);
 
         myTree.printAllElements();
         System.out.println("done");
@@ -165,22 +209,22 @@ public class TwoFourTree
         final int TEST_SIZE = 10000;
 
 
-        for (int i = 0; i < TEST_SIZE; i++) {
-            myTree.insertElement(new Integer(i), new Integer(i));
-            //          myTree.printAllElements();
-            //         myTree.checkTree();
-        }
+//        for (int i = 0; i < TEST_SIZE; i++) {
+//            myTree.insertElement(new Integer(i), new Integer(i));
+//            //          myTree.printAllElements();
+//            //         myTree.checkTree();
+//        }
         System.out.println("removing");
-        for (int i = 0; i < TEST_SIZE; i++) {
-            int out = (Integer) myTree.removeElement(new Integer(i));
-            if (out != i) {
-                throw new TwoFourTreeException("main: wrong element removed");
-            }
-            if (i > TEST_SIZE - 15) {
-                myTree.printAllElements();
-            }
-        }
-        System.out.println("done");
+//        for (int i = 0; i < TEST_SIZE; i++) {
+//            int out = (Integer) myTree.removeElement(new Integer(i));
+//            if (out != i) {
+//                throw new TwoFourTreeException("main: wrong element removed");
+//            }
+//            if (i > TEST_SIZE - 15) {
+//                myTree.printAllElements();
+//            }
+//        }
+//        System.out.println("done");
     }
 
     public void printAllElements() {
