@@ -48,14 +48,15 @@ public class TwoFourTree
     
     private void fixOverflow(TFNode node) {
         //get current node being passed in
-        
-        //create a new TFNode if current is root
         TFNode current = node;
         
         //get the current node's parent
         TFNode parent = current.getParent();
         if(parent == null){
             parent = new TFNode();
+            //set this as current's parent
+            current.setParent(parent);
+            setRoot(parent);
         }
         
         //get current nodes third item
@@ -66,20 +67,19 @@ public class TwoFourTree
         parent.insertItem(parentIndex, num3);
         //remove item from current node
         current.removeItem(2);
-        
-
+        parent.setChild(parentIndex, current);
         
         //get last item of current node
         Item num4 = current.getItem(2);
         current.removeItem(2);
+        
+        //create new tfnode for this element
+        TFNode rightChild = new TFNode();
+        rightChild.insertItem(0, num4);
         int indexInsert2 = FindFirstGreaterThanOrEqualTo(parent, num4.key());
-        TFNode childNode = parent.getChild(indexInsert2);
-        if (childNode == null) {
-            childNode = new TFNode();
-            parent.setChild(indexInsert2, childNode);
-        }
-        int childIndex = FindFirstGreaterThanOrEqualTo(childNode, num4.key());
-        childNode.insertItem(childIndex, num4);
+        //put it in child
+        parent.setChild(indexInsert2, rightChild);
+        rightChild.setParent(parent);
         
         //if parent is full, we have to fixoverflow on parent as well
         if (parent.getNumItems() == 4) {
@@ -191,18 +191,18 @@ public class TwoFourTree
 
         Integer myInt15 = new Integer(1);
         myTree.insertElement(myInt15, myInt15);
-
-        Integer myInt16 = new Integer(97);
-        myTree.insertElement(myInt16, myInt16);
-
-        Integer myInt17 = new Integer(94);
-        myTree.insertElement(myInt17, myInt17);
-
-        Integer myInt18 = new Integer(35);
-        myTree.insertElement(myInt18, myInt18);
-
-        Integer myInt19 = new Integer(51);
-        myTree.insertElement(myInt19, myInt19);
+//
+//        Integer myInt16 = new Integer(97);
+//        myTree.insertElement(myInt16, myInt16);
+//
+//        Integer myInt17 = new Integer(94);
+//        myTree.insertElement(myInt17, myInt17);
+//
+//        Integer myInt18 = new Integer(35);
+//        myTree.insertElement(myInt18, myInt18);
+//
+//        Integer myInt19 = new Integer(51);
+//        myTree.insertElement(myInt19, myInt19);
 
         myTree.printAllElements();
         System.out.println("done");
