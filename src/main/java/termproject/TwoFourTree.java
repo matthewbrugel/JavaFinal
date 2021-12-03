@@ -59,6 +59,7 @@ public class TwoFourTree
             setRoot(parent);
         }
         
+        //////////////////////////////////////move third item to parent
         //get current nodes third item
         Item num3 = current.getItem(2);
         //get index of where to insert item in parent
@@ -67,8 +68,10 @@ public class TwoFourTree
         parent.insertItem(parentIndex, num3);
         //remove item from current node
         current.removeItem(2);
+        
         parent.setChild(parentIndex, current);
         
+        /////////////////////////////////make new node for fourth item
         //get last item of current node
         Item num4 = current.getItem(2);
         current.removeItem(2);
@@ -78,8 +81,23 @@ public class TwoFourTree
         rightChild.insertItem(0, num4);
         int indexInsert2 = FindFirstGreaterThanOrEqualTo(parent, num4.key());
         //put it in child
-        parent.setChild(indexInsert2, rightChild);
         rightChild.setParent(parent);
+        parent.setChild(indexInsert2, rightChild);
+        ////////get last 2 children of current node and put it into rightChild's children
+        TFNode child4 =  current.getChild(3);
+        TFNode child5 = current.getChild(4);
+        if(child4 != null){
+            child4.setParent(rightChild);
+            rightChild.setChild(0, child4);
+        }
+        if(child5 != null){
+            child5.setParent(rightChild);
+            rightChild.setChild(1, child5);
+        }
+        
+
+        
+        
         
         //if parent is full, we have to fixoverflow on parent as well
         if (parent.getNumItems() == 4) {
@@ -132,6 +150,10 @@ public class TwoFourTree
             }
         }
         return i;
+    }
+    
+    private int WhatChild(TFNode t){
+        return 0;
     }
 
     /**
