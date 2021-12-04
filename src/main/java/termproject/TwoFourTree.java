@@ -42,62 +42,51 @@ public class TwoFourTree
      * @param key to be searched for
      * @return object corresponding to key; null if not found
      */
-    public Object findElement(Object key) {
-        return null;
+    public Object findElement(Object key) throws ElementNotFoundException{
+        //get root and start walking down tree
+        TFNode node = FFGTENode(root(), key);
+        if (node == null) {
+            throw new ElementNotFoundException();
+        }
+        int index = FindFirstGreaterThanOrEqualTo(node, key);
+        return node.getItem(index);
     }
     
     private void fixOverflow(TFNode node) {
         //get current node being passed in
-        TFNode current = node;
-        
-        //get the current node's parent
-        TFNode parent = current.getParent();
-        if(parent == null){
+        TFNode parent = node.getParent();
+        if (parent == null) {
             parent = new TFNode();
-            //set this as current's parent
-            current.setParent(parent);
             setRoot(parent);
+            
         }
-        
-        //////////////////////////////////////move third item to parent
-        //get current nodes third item
-        Item num3 = current.getItem(2);
-        //get index of where to insert item in parent
-        int parentIndex = FindFirstGreaterThanOrEqualTo(parent, num3.key());
-        //put item in parent
-        parent.insertItem(parentIndex, num3);
-        //remove item from current node
-        current.removeItem(2);
-        
-        parent.setChild(parentIndex, current);
-        
-        /////////////////////////////////make new node for fourth item
-        //get last item of current node
-        Item num4 = current.getItem(2);
-        current.removeItem(2);
-        
-        //create new tfnode for this element
-        TFNode rightChild = new TFNode();
-        rightChild.insertItem(0, num4);
-        int indexInsert2 = FindFirstGreaterThanOrEqualTo(parent, num4.key());
-        //put it in child
-        rightChild.setParent(parent);
-        parent.setChild(indexInsert2, rightChild);
-        ////////get last 2 children of current node and put it into rightChild's children
-        TFNode child4 =  current.getChild(3);
-        TFNode child5 = current.getChild(4);
-        if(child4 != null){
-            child4.setParent(rightChild);
-            rightChild.setChild(0, child4);
-        }
-        if(child5 != null){
-            child5.setParent(rightChild);
-            rightChild.setChild(1, child5);
-        }
-        
+        int index = FindFirstGreaterThanOrEqualTo(parent, node.getItem(2).key());
+        parent.insertItem(index, node.getItem(2));
 
+        //get the 4th item and make new node of its
+        TFNode sibling = new TFNode();
+        sibling.insertItem(0, node.getItem(3));
         
+        parent.setChild(index, node);
+        parent.setChild(index + 1, sibling);
         
+        sibling.setParent(parent);
+        node.setParent(parent);
+
+        //set the children into correct positions
+        if(node.getChild(3) != null){
+            sibling.setChild(0, node.getChild(3));
+            sibling.getChild(0).setParent(sibling);
+        }
+        if(node.getChild(4) != null){
+            sibling.setChild(1, node.getChild(4));
+            sibling.getChild(1).setParent(sibling);
+        }
+        TFNode thirdChild = node.getChild(2);
+        node.removeItem(2);
+        node.removeItem(2);
+        
+        node.setChild(2, thirdChild);
         
         //if parent is full, we have to fixoverflow on parent as well
         if (parent.getNumItems() == 4) {
@@ -141,7 +130,7 @@ public class TwoFourTree
      * @param key being compared
      * @return the first item greater than or 
      */
-    public int FindFirstGreaterThanOrEqualTo(TFNode T, Object key){
+    private int FindFirstGreaterThanOrEqualTo(TFNode T, Object key){
         int i = 0;
         for(i = 0; i < T.getNumItems(); i++){
             Object k = T.getItem(i).key();
@@ -151,7 +140,20 @@ public class TwoFourTree
         }
         return i;
     }
-    
+    private TFNode FFGTENode(TFNode T, Object key){
+        TFNode current = T;
+        if(current == null) {
+            return null;
+        }
+        int index = FindFirstGreaterThanOrEqualTo(current, key);
+        if (index == current.getNumItems()) {
+            return FFGTENode(current.getChild(index), key);
+        }
+        if(treeComp.isEqual(current.getItem(index).key(), key)) {
+           return current;
+        }
+        return FFGTENode(current.getChild(index), key);
+    }
     private int WhatChild(TFNode t){
         return 0;
     }
@@ -213,21 +215,23 @@ public class TwoFourTree
 
         Integer myInt15 = new Integer(1);
         myTree.insertElement(myInt15, myInt15);
-//
-//        Integer myInt16 = new Integer(97);
-//        myTree.insertElement(myInt16, myInt16);
-//
-//        Integer myInt17 = new Integer(94);
-//        myTree.insertElement(myInt17, myInt17);
-//
-//        Integer myInt18 = new Integer(35);
-//        myTree.insertElement(myInt18, myInt18);
-//
-//        Integer myInt19 = new Integer(51);
-//        myTree.insertElement(myInt19, myInt19);
+
+        Integer myInt16 = new Integer(97);
+        myTree.insertElement(myInt16, myInt16);
+
+        Integer myInt17 = new Integer(94);
+        myTree.insertElement(myInt17, myInt17);
+
+        Integer myInt18 = new Integer(35);
+        myTree.insertElement(myInt18, myInt18);
+
+        Integer myInt19 = new Integer(51);
+        myTree.insertElement(myInt19, myInt19);
 
         myTree.printAllElements();
         System.out.println("done");
+        
+        myTree.findElement(7);
 
         myTree = new TwoFourTree(myComp);
         final int TEST_SIZE = 10000;
