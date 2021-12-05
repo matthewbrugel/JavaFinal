@@ -3,36 +3,62 @@ package termproject;
 import java.awt.RenderingHints;
 
 /**
- * Title:        Term Project 2-4 Trees
- * Description:
- * Copyright:    Copyright (c) 2001
- * Company:
- * @author
+ * This class defines a Two-Four Tree that implements the Dictionary interface.
+ *
+ * @author Jackson Isenhower
+ * @author Matthew Brugel
  * @version 1.0
+ * File: TwoFourTree.java
+ * Created: Dec 2021
+ * ©Copyright Cedarville University, its Computer Science faculty, and the  
+ * authors.  All rights reserved.
+ * Summary of Modifications:
+ *     30 Nov 2021 - MSB - Created project and setup GitHub
+ *     05 Dec 2021 - JTI - Implemented whatChildIsThis method
+ *
+ * Description: This class enables the user to interact with a 2-4 Tree like a
+ * Dictionary, which allows users to find, insert, and remove elements. 
+ * findElement() locates the specific item of a key in a node and returns it,
+ * insertElement() inserts an element into the tree, and removeElement() finds
+ * and removes an element from the tree, returning it.
  */
-public class TwoFourTree
-        implements Dictionary {
-
+public class TwoFourTree implements Dictionary {
     private Comparator treeComp;
     private int size = 0;
     private TFNode treeRoot = null;
-
+    
+    /**
+     * Sets the comparator to use when comparing keys
+     * @param comp 
+     */
     public TwoFourTree(Comparator comp) {
         treeComp = comp;
     }
-
+    /**
+     * Returns the root of the tree
+     * @return treeRoot
+     */
     private TFNode root() {
         return treeRoot;
     }
-
+    /**
+     * Sets the root of the tree
+     * @param root node to set to
+     */
     private void setRoot(TFNode root) {
         treeRoot = root;
     }
-
+    /**
+     * Returns the size of the tree
+     * @return size of the tree
+     */
     public int size() {
         return size;
     }
-
+    /**
+     * Returns true if the tree is empty, and false otherwise
+     * @return whether tree is empty
+     */
     public boolean isEmpty() {
         return (size == 0);
     }
@@ -48,10 +74,14 @@ public class TwoFourTree
         if (node == null) {
             throw new ElementNotFoundException();
         }
-        int index = FindFirstGreaterThanOrEqualTo(node, key);
+        int index = findFirstGreaterThanOrEqualTo(node, key);
         return node.getItem(index);
     }
     
+    /**
+     * Corrects an overflowed node to three or less elements
+     * @param node 
+     */
     private void fixOverflow(TFNode node) {
         //get current node being passed in
         TFNode parent = node.getParent();
@@ -60,7 +90,7 @@ public class TwoFourTree
             setRoot(parent);
             
         }
-        int index = FindFirstGreaterThanOrEqualTo(parent, node.getItem(2).key());
+        int index = findFirstGreaterThanOrEqualTo(parent, node.getItem(2).key());
         parent.insertItem(index, node.getItem(2));
 
         //get the 4th item and make new node of its
@@ -112,7 +142,7 @@ public class TwoFourTree
         int currentIndex = 0;
        
         while (currentNode != null) {
-            currentIndex = FindFirstGreaterThanOrEqualTo(currentNode, key);
+            currentIndex = findFirstGreaterThanOrEqualTo(currentNode, key);
             previousNode = currentNode;
             currentNode = previousNode.getChild(currentIndex);
         }
@@ -128,10 +158,10 @@ public class TwoFourTree
      * the current key
      * @param T node being searched
      * @param key being compared
-     * @return the first item greater than or 
+     * @return the first item greater than or equal to the current key
      */
-    private int FindFirstGreaterThanOrEqualTo(TFNode T, Object key){
-        int i = 0;
+    private int findFirstGreaterThanOrEqualTo(TFNode T, Object key) {
+        int i;
         for(i = 0; i < T.getNumItems(); i++){
             Object k = T.getItem(i).key();
             if (treeComp.isGreaterThanOrEqualTo(k, key)) {
@@ -140,12 +170,18 @@ public class TwoFourTree
         }
         return i;
     }
+    /**
+     * Finds the TFNode that contains a key at an index
+     * @param T is the current node to search
+     * @param key is the key to be found in the node T or its children
+     * @return the node that contains an item with the key
+     */
     private TFNode FFGTENode(TFNode T, Object key){
         TFNode current = T;
         if(current == null) {
             return null;
         }
-        int index = FindFirstGreaterThanOrEqualTo(current, key);
+        int index = findFirstGreaterThanOrEqualTo(current, key);
         if (index == current.getNumItems()) {
             return FFGTENode(current.getChild(index), key);
         }
@@ -154,8 +190,22 @@ public class TwoFourTree
         }
         return FFGTENode(current.getChild(index), key);
     }
-    private int WhatChild(TFNode t){
-        return 0;
+    
+    /**
+     * Looks through all children of a node to find the node specified
+     * @param T is the current node to search
+     * @param child node to locate in parent being searched
+     * @return index of node where the child is
+     */
+    private int whatChildIsThis(TFNode T, TFNode child) throws TFNodeException {
+        int i;
+        for (i = 0; i < T.getNumItems(); i++) {
+            //Probably need to reimplement to check the keys/values inside both
+            if (T.getChild(i) == child) {
+                return i;
+            }
+        }
+        throw new TFNodeException("Unable to locate child node in parent node");
     }
 
     /**
