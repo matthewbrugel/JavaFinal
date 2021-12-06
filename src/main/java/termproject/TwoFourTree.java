@@ -123,6 +123,44 @@ public class TwoFourTree implements Dictionary {
             fixOverflow(parent);
         }
     }
+    /**
+     * Corrects an underflowed node to more than one element
+     * @param node 
+     */
+    private void fixUnderflow(TFNode node) {
+        TFNode parent = node.getParent();
+        int thisIndex = whatChildIsThis(parent, node);
+        TFNode s;
+        TFNode childFromS;
+        Item keyFromS;
+        Item keyFromParent;
+        //If either of these are true, we do a transfer operation
+        if (thisIndex < 1 &&
+                parent.getNumItems() > 1 &&
+                parent.getChild(thisIndex - 1).getNumItems() >= 2) {
+            s = parent.getChild(thisIndex - 1);
+            childFromS = s.getChild(s.getNumItems());
+            keyFromS = s.removeItem(s.getNumItems() - 1);
+            keyFromParent = parent.removeItem(parent.getNumItems() - 1);
+            node.insertItem(node.getNumItems() - 1, keyFromParent);
+            parent.insertItem(parent.getNumItems() - 1, keyFromS);
+            node.setChild(0, childFromS);
+        }
+        else if (thisIndex > 3 &&
+                parent.getChild(thisIndex + 1).getNumItems() >= 2) {
+            s = parent.getChild(thisIndex + 1);
+            childFromS = s.getChild(0);
+            keyFromS = s.removeItem(0);
+            keyFromParent = parent.removeItem(0);
+            node.insertItem(0, keyFromParent);
+            parent.insertItem(0, keyFromS);
+            node.setChild(1, childFromS);
+        }
+        //Otherwise we do a fusion operation
+        else {
+            //Implement Fusion Operation
+        }
+    }
 
     /**
      * Inserts provided element into the Dictionary
