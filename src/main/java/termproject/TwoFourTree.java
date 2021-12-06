@@ -158,10 +158,43 @@ public class TwoFourTree implements Dictionary {
         }
         //Otherwise we do a fusion operation
         else {
-            //Implement Fusion Operation
+            //New node created to merge current node and a sibling
+            TFNode mergeNode;
+            if (thisIndex == 0) {
+                keyFromParent = parent.removeItem(0);
+                node.addItem(0, keyFromParent);
+                mergeNode = mergeNodes(node, parent.getChild(1));
+                parent.setChild(thisIndex, mergeNode);
+            }
+            else {
+                keyFromParent = parent.removeItem(parent.getNumItems() - 1);
+                node.addItem(0, keyFromParent);
+                mergeNode = mergeNodes(node, parent.getChild(thisIndex - 1));
+                parent.setChild(parent.getNumItems(), mergeNode);
+            }
+            if (parent.getNumItems() == 0) {
+                fixUnderflow(parent);
+            }
         }
     }
 
+    public TFNode mergeNodes(TFNode nodeOne, TFNode nodeTwo) {
+        TFNode mergeNode = new TFNode();
+        for (int i = 0; i < nodeOne.getNumItems(); i++) {
+            Item currentItem = nodeOne.getItem(i);
+            int currentIndex = findFirstGreaterThanOrEqualTo(
+                    mergeNode, currentItem.key());
+            mergeNode.insertItem(currentIndex, currentItem);
+        }
+        for (int i = 0; i < nodeTwo.getNumItems(); i++) {
+            Item currentItem = nodeTwo.getItem(i);
+            int currentIndex = findFirstGreaterThanOrEqualTo(
+                    mergeNode, currentItem.key());
+            mergeNode.insertItem(currentIndex, currentItem);
+        }
+        return mergeNode;
+    }
+    
     /**
      * Inserts provided element into the Dictionary
      * @param key of object to be inserted
